@@ -32,4 +32,8 @@ export default class SpriteSheet {
     draw(name, context, x, y) {
         context.drawImage(this.tiles.get(name), x, y);
     }
+
+    drawTile(name, context, x, y) {
+        this.draw(name, context, x * this.width, y * this.height);
+    }
 }
