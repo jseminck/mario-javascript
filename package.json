@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "serve ./public"
+    "start": "serve ./public",
+    "lint": "eslint ."
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-recommended": "^1.5.0"
+  }
 }

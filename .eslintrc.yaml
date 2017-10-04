@@ -1,0 +1,9 @@
+extends:
+  - recommended/esnext
+  - recommended/esnext/style-guide
+env:
+  browser: true
+rules:
+  import/extensions: 0
+  indent: ["error", 4]
+  space-before-function-paren: ["error", "never"]
