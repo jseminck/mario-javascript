@@ -19,7 +19,7 @@ Promise.all([
     loadLevel("1-1"),
 ])
 .then(([image, levelSpec]) => {
-    const sprites = new SpriteSheet(image);
+    const sprites = new SpriteSheet(image, 16, 16);
 
      sprites.define('ground', 0, 0);
      sprites.define('sky', 3, 23);
