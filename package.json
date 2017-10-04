@@ -1,0 +1,11 @@
+{
+  "name": "mario-javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve ./public"
+  },
+  "author": "",
+  "license": "MIT"
+}
