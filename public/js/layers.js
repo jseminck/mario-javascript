@@ -3,8 +3,6 @@ function drawBackground(background, context, sprites) {
         for (let x = x1; x < x2; ++x)
             for (let y = y1; y < y2; ++y)
                 sprites.drawTile(background.tile, context, x, y)
-
-
     })
 }
 
@@ -22,8 +20,8 @@ export function createBackgroundLayer(backgrounds, sprites) {
     }
 }
 
-export function createSpriteLayer(entities) {
+export function createSpriteLayer(entity) {
     return function drawSpriteLayer(context) {
-        entities.forEach(entity => entity.draw(context))
+        entity.draw(context)
     }
 }

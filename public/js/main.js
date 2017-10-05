@@ -3,6 +3,7 @@ import Compositor from './Compositor.js'
 import { createMario } from './entities.js'
 import { loadBackgroundSprites } from './sprites.js'
 import { loadLevel } from './loaders.js'
+import Timer from './Timer.js'
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
@@ -13,22 +14,18 @@ Promise.all([
     createMario(),
 ])
     .then(([ backgroundSprites, levelSpec, mario ]) => {
-        const entities = [ mario ]
-
         const comp = new Compositor()
         comp.addLayer(createBackgroundLayer(levelSpec.backgrounds, backgroundSprites))
-        comp.addLayer(createSpriteLayer(entities))
+        comp.addLayer(createSpriteLayer(mario))
 
-        function update() {
-            entities.forEach(entity => {
-                entity.update()
-                entity.vel.y += 0.5
-            })
+        const timer = new Timer()
 
+        timer.update = function update(deltaTime) {
             comp.draw(context)
 
-            requestAnimationFrame(update)
+            mario.update(deltaTime)
+            mario.vel.y += 30 // Gravity
         }
 
-        update()
+        timer.start()
     })
