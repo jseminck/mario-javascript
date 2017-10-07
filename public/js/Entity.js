@@ -13,7 +13,7 @@ export default class Entity {
         this[trait.NAME] = trait
     }
 
-    update(deltaTime, input) {
+    update(deltaTime) {
         this.traits.forEach(trait => {
             trait.update(this, deltaTime)
         })

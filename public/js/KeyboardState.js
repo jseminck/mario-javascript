@@ -9,14 +9,14 @@ export default class KeyboardState {
         this.keyMap = new Map()
     }
 
-    addMapping(code, callback) {
-        this.keyMap.set(code, callback)
+    addMapping(keyCode, callback) {
+        this.keyMap.set(keyCode, callback)
     }
 
     handleEvent(event) {
         const { keyCode } = event
 
-        if (!this.keyMap.has(keyCode)) return false
+        if (!this.keyMap.has(keyCode)) return
 
         event.preventDefault()
         const keyState = event.type === 'keydown' ? PRESSED : RELEASED
@@ -25,11 +25,8 @@ export default class KeyboardState {
             if (this.keyMap.has(keyCode))
                 this.keyMap.get(keyCode)(keyState, event)
 
-
             this.keyStates.set(keyCode, keyState)
         }
-
-        return true
     }
 
     listenTo(target) {
