@@ -1,12 +1,15 @@
 import { createBackgroundLayer, createSpriteLayer } from './layers.js'
 import Compositor from './Compositor.js'
+import Timer from './Timer.js'
 import { createMario } from './entities.js'
 import { loadBackgroundSprites } from './sprites.js'
 import { loadLevel } from './loaders.js'
-import Timer from './Timer.js'
+import { setupInput } from './input.js'
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
+
+const GRAVITY = 2000
 
 Promise.all([
     loadBackgroundSprites(),
@@ -18,13 +21,14 @@ Promise.all([
         comp.addLayer(createBackgroundLayer(levelSpec.backgrounds, backgroundSprites))
         comp.addLayer(createSpriteLayer(mario))
 
+        setupInput(mario).listenTo(window)
+
         const timer = new Timer()
 
         timer.update = function update(deltaTime) {
-            comp.draw(context)
-
             mario.update(deltaTime)
-            mario.vel.y += 30 // Gravity
+            comp.draw(context)
+            mario.vel.y += GRAVITY * deltaTime
         }
 
         timer.start()
