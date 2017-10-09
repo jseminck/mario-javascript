@@ -2,6 +2,8 @@ import Timer from './Timer.js'
 import { createMario } from './entities.js'
 import { loadLevel } from './loaders.js'
 import { setupInput } from './input.js'
+import { setupMouseHandler } from "./debug.js"
+import { createCollisionLayer } from "./layers.js"
 
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
@@ -17,6 +19,10 @@ Promise.all([
 
         const timer = new Timer()
         level.entities.add(mario)
+
+        // Debug
+        setupMouseHandler(canvas, mario);
+        level.comp.layers.push(createCollisionLayer(level))
 
         timer.update = function update(deltaTime) {
             level.update(deltaTime)

@@ -25,6 +25,10 @@ export class Matrix {
         this.grid[x][y] = value
     }
 
+    clear() {
+        this.grid.length = 0
+    }
+
     forEach(fn) {
         this.grid.forEach((col, x) => {
             col.forEach((tile, y) => {
