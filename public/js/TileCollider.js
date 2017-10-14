@@ -6,22 +6,34 @@ export default class TileCollider {
     }
 
     checkY(entity) {
-        const matches = this.getMatches(entity)
+        let y;
+        if (entity.isMovingDown()) {
+            y = entity.pos.y + entity.size.y
+        }
+        else if (entity.isMovingUp()) {
+            y = entity.pos.y
+        }
+        else {
+            return;
+        }
+
+        const matches = this.tiles.matchByRange(
+            entity.pos.x, entity.pos.x + entity.size.x,
+            y, y
+        );
 
         matches.forEach(match => {
             if (match.tile.name !== 'ground') {
                 return;
             }
 
-            // Moving down (falling)
-            if (entity.vel.y > 0) {
+            if (entity.isMovingDown()) {
                 if (entity.pos.y + entity.size.y > match.y1) {
                     entity.pos.y = match.y1 - entity.size.y;
                     entity.vel.y = 0;
                 }
             }
-            // Moving up (jumping)
-            else if (entity.vel.y < 0) {
+            else if (entity.isMovingUp()) {
                 if (entity.pos.y < match.y2) {
                     entity.pos.y = match.y2
                     entity.vel.y = 0
@@ -31,35 +43,38 @@ export default class TileCollider {
     }
 
     checkX(entity) {
-        const matches = this.getMatches(entity)
+        let x;
+        if (entity.isMovingRight()) {
+            x = entity.pos.x + entity.size.x;
+        }
+        else if (entity.isMovingLeft()) {
+            x = entity.pos.x
+        } else {
+            return;
+        }
+
+        const matches = this.tiles.matchByRange(
+            x, x,
+            entity.pos.y, entity.pos.y + entity.size.y
+        );
 
         matches.forEach(match => {
             if (match.tile.name !== 'ground') {
                 return;
             }
-            // Moving right
-            if (entity.vel.x > 0) {
+
+            if (entity.isMovingRight()) {
                 if (entity.pos.x + entity.size.x > match.x1) {
-                    console.log("Collision detected while moving right");
                     entity.pos.x = match.x1 - entity.size.x;
                     entity.vel.x = 0;
                 }
             }
-            // Moving left
-            else if (entity.vel.x < 0) {
+            else if (entity.isMovingLeft()) {
                 if (entity.pos.x < match.x2) {
-                    console.log("Collision detected while moving left");
                     entity.pos.x = match.x2
                     entity.vel.x = 0
                 }
             }
         })
-    }
-
-    getMatches(entity) {
-        return this.tiles.matchByRange(
-            entity.pos.x, entity.pos.x + entity.size.x,
-            entity.pos.y, entity.pos.y + entity.size.y
-        );
     }
 }

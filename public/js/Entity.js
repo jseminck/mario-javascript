@@ -19,4 +19,20 @@ export default class Entity {
             trait.update(this, deltaTime)
         })
     }
+
+    isMovingRight() {
+        return this.vel.x > 0
+    }
+
+    isMovingLeft() {
+        return this.vel.x < 0
+    }
+
+    isMovingUp() {
+        return this.vel.y < 0
+    }
+
+    isMovingDown() {
+        return this.vel.y > 0
+    }
 }
