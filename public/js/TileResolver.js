@@ -23,7 +23,7 @@ export default class TileResolver {
 
     getByIndex(x, y) {
         const tile = this.matrix.get(x, y)
-        const x1 = x * this.tilesize;
+        const x1 = x * this.tileSize;
         const x2 = x1 + this.tileSize
         const y1 = y * this.tileSize;
         const y2 = y1 + this.tileSize;

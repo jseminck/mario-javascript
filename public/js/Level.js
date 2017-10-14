@@ -14,7 +14,14 @@ export default class Level {
     update(deltaTime) {
         this.entities.forEach(entity => {
             entity.update(deltaTime)
-            this.tileCollider.test(entity)
+
+            // Move on the x-axis and check for x-collison
+            entity.pos.x += entity.vel.x * deltaTime
+            this.tileCollider.checkX(entity)
+
+            // Move on the y-axis and check for y-collison
+            entity.pos.y += entity.vel.y * deltaTime
+            this.tileCollider.checkY(entity)
         });
 
     }
