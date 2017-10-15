@@ -8,8 +8,6 @@ import { createCollisionLayer } from "./layers.js"
 const canvas = document.getElementById('screen')
 const context = canvas.getContext('2d')
 
-const GRAVITY = 2000
-
 Promise.all([
     loadLevel('1-1'),
     createMario(),
@@ -27,7 +25,6 @@ Promise.all([
         timer.update = function update(deltaTime) {
             level.update(deltaTime)
             level.comp.draw(context)
-            mario.vel.y += GRAVITY * deltaTime
         }
 
         timer.start()
