@@ -1,3 +1,4 @@
+import entityCollisionLayerCheckbox from "./options/EntityCollisionLayerCheckbox.js";
 import { Matrix } from "./math.js"
 
 export function createBackgroundLayer(level, sprites) {
@@ -22,6 +23,10 @@ export function createSpriteLayer(entities) {
 }
 
 export function createCollisionLayer(level) {
+    if (!entityCollisionLayerCheckbox.getChecked()) {
+        return () => {}; // Return a noop
+    }
+
     const tileResolver = level.tileCollider.tiles;
     const tileSize = tileResolver.tileSize;
 
