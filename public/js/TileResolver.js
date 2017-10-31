@@ -32,11 +32,11 @@ export default class TileResolver {
         }
     }
 
-    matchByPosition(x, y) {
+    searchByPosition(x, y) {
         return this.getByIndex(this.toIndex(x), this.toIndex(y));
     }
 
-    matchByRange(x1, x2, y1, y2) {
+    searchByRange(x1, x2, y1, y2) {
         const matches = []
 
         this.toIndexRange(x1, x2).forEach(x => {

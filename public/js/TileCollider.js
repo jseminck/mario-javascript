@@ -17,7 +17,7 @@ export default class TileCollider {
             return;
         }
 
-        const matches = this.tiles.matchByRange(
+        const matches = this.tiles.searchByRange(
             entity.pos.x, entity.pos.x + entity.size.x,
             y, y
         );
@@ -53,7 +53,7 @@ export default class TileCollider {
             return;
         }
 
-        const matches = this.tiles.matchByRange(
+        const matches = this.tiles.searchByRange(
             x, x,
             entity.pos.y, entity.pos.y + entity.size.y
         );

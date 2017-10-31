@@ -30,12 +30,12 @@ export function createCollisionLayer(level) {
     const tileResolver = level.tileCollider.tiles;
     const tileSize = tileResolver.tileSize;
 
-    const resolvedTiles = new Matrix()
+    const resolvedTiles = [];
 
     // Spy on getByIndex to store the tiles that are matched for collision
     const getByIndexOriginal = tileResolver.getByIndex;
     tileResolver.getByIndex = function getByIndexFake(x, y) {
-        resolvedTiles.set(x, y, true);
+        resolvedTiles.push({x, y});
         return getByIndexOriginal.call(tileResolver, x, y);
     }
 
