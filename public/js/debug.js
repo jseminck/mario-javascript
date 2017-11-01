@@ -1,10 +1,13 @@
 // eslint-disable-next-line
-export function setupMouseHandler(canvas, entity) {
+export function setupDebugMouseHandler(canvas, camera, entity) {
     ['mousedown', 'mousemove'].forEach(eventName => {
         canvas.addEventListener(eventName, event => {
             if (event.buttons === 1) {
                 entity.vel.set(0, 0);
-                entity.pos.set(event.offsetX, event.offsetY);
+                entity.pos.set(
+                    event.offsetX + camera.pos.x,
+                    event.offsetY + camera.pos.y
+                );
             }
         });
     });

@@ -1,24 +1,39 @@
 import entityCollisionLayerCheckbox from "./options/EntityCollisionLayerCheckbox.js";
-import { Matrix } from "./math.js"
 
 export function createBackgroundLayer(level, sprites) {
     const backgroundBuffer = document.createElement('canvas')
     backgroundBuffer.width = 1024
     backgroundBuffer.height = 960
 
-    const context = backgroundBuffer.getContext('2d');
+    const backgroundContext = backgroundBuffer.getContext('2d');
     level.tiles.forEach((tile, x, y) => {
-        sprites.drawTile(tile.name, context, x, y);
+        sprites.drawTile(tile.name, backgroundContext, x, y);
     })
 
-    return function drawBackgroundLayer(context) {
-        context.drawImage(backgroundBuffer, 0, 0)
+    return function drawBackgroundLayer(context, camera) {
+        context.drawImage(backgroundBuffer, -camera.pos.x, -camera.pos.y)
     }
 }
 
-export function createSpriteLayer(entities) {
-    return function drawSpriteLayer(context) {
-        entities.forEach(entity => entity.draw(context))
+export function createSpriteLayer(entities, width = 64, height = 64) {
+    const spriteBuffer = document.createElement('canvas');
+    spriteBuffer.width = width;
+    spriteBuffer.height = height;
+
+    const spriteBufferContext = spriteBuffer.getContext('2d');
+
+    return function drawSpriteLayer(context, camera) {
+        entities.forEach(entity => {
+            spriteBufferContext.clearRect(0, 0, width, height);
+
+            entity.draw(spriteBufferContext);
+
+            context.drawImage(
+                spriteBuffer,
+                entity.pos.x - camera.pos.x,
+                entity.pos.y - camera.pos.y
+            )
+        })
     }
 }
 
@@ -39,29 +54,39 @@ export function createCollisionLayer(level) {
         return getByIndexOriginal.call(tileResolver, x, y);
     }
 
-    function drawTiles(context) {
+    function drawTiles(context, camera) {
         context.strokeStyle = 'blue'
 
         resolvedTiles.forEach((value, x, y) => {
             context.beginPath();
-            context.rect(x * tileSize, y * tileSize, tileSize, tileSize)
+            context.rect(
+                x * tileSize - camera.pos.x,
+                y * tileSize - camera.pos.y,
+                tileSize,
+                tileSize
+            )
             context.stroke()
         })
     }
 
-    function drawCollisionBoxes(context) {
+    function drawCollisionBoxes(context, camera) {
         context.strokeStyle = 'red'
 
         level.entities.forEach(entity => {
             context.beginPath();
-            context.rect(entity.pos.x, entity.pos.y, entity.size.x, entity.size.y)
+            context.rect(
+                entity.pos.x - camera.pos.x,
+                entity.pos.y - camera.pos.y,
+                entity.size.x,
+                entity.size.y
+            )
             context.stroke()
         })
     }
 
-    return function drawCollisions(context) {
-        drawTiles(context)
-        drawCollisionBoxes(context)
+    return function drawCollisions(context, camera) {
+        drawTiles(context, camera)
+        drawCollisionBoxes(context, camera)
         resolvedTiles.clear()
     }
 }
