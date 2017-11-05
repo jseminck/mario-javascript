@@ -1,17 +1,47 @@
 import entityCollisionLayerCheckbox from "./options/EntityCollisionLayerCheckbox.js";
 
 export function createBackgroundLayer(level, sprites) {
+    const { tiles } = level;
+    const resolver = level.tileCollider.tiles;
+
     const backgroundBuffer = document.createElement('canvas')
-    backgroundBuffer.width = 1024
+    backgroundBuffer.width = 256 + 16
     backgroundBuffer.height = 960
 
     const backgroundContext = backgroundBuffer.getContext('2d');
-    level.tiles.forEach((tile, x, y) => {
-        sprites.drawTile(tile.name, backgroundContext, x, y);
-    })
+
+    // Keep track of these two not redraw when the screen does not move.
+    let startIndex, endIndex;
+    function redraw(drawFrom, drawTo) {
+        if (drawFrom === startIndex && drawTo === endIndex) {
+            return;
+        }
+
+        startIndex = drawFrom;
+        endIndex = drawTo;
+
+        for(let x = startIndex; x <= endIndex; x++) {
+            const col = tiles.grid[x];
+            if (col) {
+                col.forEach((tile, y) => { // eslint-disable-line
+                    sprites.drawTile(tile.name, backgroundContext, x - startIndex, y);
+                })
+            }
+        }
+    }
 
     return function drawBackgroundLayer(context, camera) {
-        context.drawImage(backgroundBuffer, -camera.pos.x, -camera.pos.y)
+        const drawWidth = resolver.toIndex(camera.size.x);
+        const drawFrom = resolver.toIndex(camera.pos.x);
+        const drawTo = drawFrom + drawWidth
+
+        redraw(drawFrom, drawTo);
+
+        context.drawImage(
+            backgroundBuffer,
+            -camera.pos.x % 16,
+            -camera.pos.y
+        )
     }
 }
 
@@ -34,6 +64,21 @@ export function createSpriteLayer(entities, width = 64, height = 64) {
                 entity.pos.y - camera.pos.y
             )
         })
+    }
+}
+
+export function createCameraLayer(cameraToDraw) {
+    return function drawCameraRect(context, fromCamera) {
+        context.strokeStyle = 'purple';
+
+        context.beginPath();
+        context.rect(
+            cameraToDraw.pos.x - fromCamera.pos.x,
+            cameraToDraw.pos.y - fromCamera.pos.y,
+            cameraToDraw.size.x,
+            cameraToDraw.size.y
+        )
+        context.stroke()
     }
 }
 

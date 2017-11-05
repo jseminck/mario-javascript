@@ -4,7 +4,7 @@ import { createMario } from './entities.js'
 import { loadLevel } from './loaders.js'
 import { setupInput } from './input.js'
 import { setupDebugMouseHandler, setupDebugMouseCameraMover } from "./debug.js"
-import { createCollisionLayer } from "./layers.js"
+import { createCollisionLayer, createCameraLayer } from "./layers.js"
 import Options from "./options/index.js"
 
 const options = new Options(run);
@@ -30,6 +30,7 @@ function run() {
             setupDebugMouseHandler(canvas, camera, mario);
             setupDebugMouseCameraMover(canvas, camera);
             level.comp.layers.push(createCollisionLayer(level))
+            level.comp.layers.push(createCameraLayer(camera))
 
             timer.update = function update(deltaTime) {
                 level.update(deltaTime)
