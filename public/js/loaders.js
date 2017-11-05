@@ -40,7 +40,8 @@ function createTiles(level, backgrounds) {
         for (let x = xStart; x < xEnd; x++) {
             for (let y = yStart; y < yEnd; y++) {
                 level.tiles.set(x, y, {
-                    name: background.tile
+                    name: background.tile,
+                    type: background.type
                 })
             }
         }
