@@ -2,12 +2,7 @@ import Entity from './Entity.js'
 import Jump from './traits/Jump.js'
 import Go from './traits/Go.js'
 import { loadSpriteSheet } from './loaders.js'
-
-function createAnim(frames, frameDuration) {
-    return function resolveFrame(distance) {
-        return frames[Math.floor(distance / frameDuration % frames.length)];
-    }
-}
+import {createAnim} from './anim.js';
 
 // eslint-disable-next-line
 export function createMario() {
