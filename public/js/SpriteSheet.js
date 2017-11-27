@@ -9,8 +9,8 @@ export default class SpriteSheet {
 
     define(name, x, y, width, height) {
         const buffer = document.createElement('canvas')
-        buffer.height = this.height
-        buffer.width = this.width
+        buffer.height = height
+        buffer.width = width
 
         buffer
             .getContext('2d')

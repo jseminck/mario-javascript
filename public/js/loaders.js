@@ -65,7 +65,7 @@ function createTiles(level, backgrounds) {
     })
 }
 
-function loadSpriteSheet(name) {
+export function loadSpriteSheet(name) {
     return loadJSON(`/sprites/${name}.json`)
         .then(sheetSpec => Promise.all([
             sheetSpec,
@@ -74,13 +74,24 @@ function loadSpriteSheet(name) {
         .then(([sheetSpec, image]) => {
             const sprites = new SpriteSheet(image, sheetSpec.tileW, sheetSpec.tileH)
 
-            sheetSpec.tiles.forEach(tile => {
-                sprites.defineTile(
-                    tile.name,
-                    tile.index[0],
-                    tile.index[1]
-                )
-            })
+            if (sheetSpec.tiles) {
+                sheetSpec.tiles.forEach(tile => {
+                    sprites.defineTile(
+                        tile.name,
+                        tile.index[0],
+                        tile.index[1]
+                    )
+                })
+            }
+
+            if (sheetSpec.frames) {
+                sheetSpec.frames.forEach(frame => {
+                    sprites.define(
+                        frame.name,
+                        ...frame.rect
+                    )
+                })
+            }
 
             return sprites
         })
