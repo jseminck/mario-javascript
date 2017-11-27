@@ -11,13 +11,13 @@ export function setupInput(mario) {
             mario.jump.abort()
     })
 
-    keyboardState.addMapping('ArrowRight', state => {
-        mario.go.dir = state;
+    keyboardState.addMapping('ArrowRight', (state) => {
+        mario.go.setDirection(state);
     })
 
 
-    keyboardState.addMapping('ArrowLeft', state => {
-        mario.go.dir = -state;
+    keyboardState.addMapping('ArrowLeft', (state) => {
+        mario.go.setDirection(-state);
     })
 
     return keyboardState
